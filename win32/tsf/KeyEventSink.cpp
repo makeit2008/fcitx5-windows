@@ -1,4 +1,5 @@
 #include "tsf.h"
+#include "EventHandler.h"
 
 namespace fcitx {
 bool Tsf::initKeyEventSink() {
@@ -19,13 +20,26 @@ void Tsf::uninitKeyEventSink() {
 }
 
 BOOL Tsf::processKey(WPARAM wParam, LPARAM lParam) {
+    // Filter out special keys that shouldn't be processed as input
+    if (isSpecialKey(wParam)) {
+        return FALSE; // Let the application handle special keys
+    }
+
+    // Reject keys if we don't have a text context
+    if (textEditSinkContext_ == nullptr) {
+        return FALSE;
+    }
+
+    // Request an edit session to handle the keystroke
     HRESULT phrSession;
     textEditSinkContext_->RequestEditSession(
         clientId_, this, TF_ES_ASYNCDONTCARE | TF_ES_READWRITE, &phrSession);
     return TRUE;
 }
 
-STDMETHODIMP Tsf::OnSetFocus(BOOL fForeground) { return S_OK; }
+STDMETHODIMP Tsf::OnSetFocus(BOOL fForeground) { 
+    return S_OK; 
+}
 
 STDMETHODIMP Tsf::OnTestKeyDown(ITfContext *pContext, WPARAM wParam,
                                 LPARAM lParam, BOOL *pfEaten) {
@@ -50,16 +64,19 @@ STDMETHODIMP Tsf::OnKeyDown(ITfContext *pContext, WPARAM wParam, LPARAM lParam,
 
 STDMETHODIMP Tsf::OnTestKeyUp(ITfContext *pContext, WPARAM wParam,
                               LPARAM lParam, BOOL *pfEaten) {
+    *pfEaten = FALSE;
     return S_OK;
 }
 
 STDMETHODIMP Tsf::OnKeyUp(ITfContext *pContext, WPARAM wParam, LPARAM lParam,
                           BOOL *pfEaten) {
+    *pfEaten = FALSE;
     return S_OK;
 }
 
 STDMETHODIMP Tsf::OnPreservedKey(ITfContext *pContext, REFGUID rguid,
                                  BOOL *pfEaten) {
+    *pfEaten = FALSE;
     return S_OK;
 }
 } // namespace fcitx

@@ -4,12 +4,7 @@
         {
             "type": "shell",
             "label": "Configure (x86_64)",
-            "command": "cmake -B build/x86_64 -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE='windows-cross/msys2.toolchain.cmake' -DARCH=AMD64",
-            "options": {
-                "env": {
-                    "PATH": "C:/msys64/clang64/bin"
-                }
-            },
+            "command": "export ARCH=AMD64 && /usr/bin/cmake -B build/x86_64 -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE='windows-cross/msys2.toolchain.cmake' -DARCH=AMD64",
             "group": {
                 "kind": "build"
             }
@@ -39,11 +34,6 @@
             "type": "shell",
             "label": "Configure (arm64)",
             "command": "cmake -B build/arm64 -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE='windows-cross/msys2.toolchain.cmake' -DARCH=ARM64",
-            "options": {
-                "env": {
-                    "PATH": "C:/msys64/clang64/bin"
-                }
-            },
             "group": {
                 "kind": "build"
             }
@@ -81,6 +71,62 @@
             "type": "shell",
             "label": "Lint",
             "command": "./win32/scripts/lint.ps1",
+            "group": {
+                "kind": "build"
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Install Dependencies",
+            "command": "sudo apt-get update && sudo apt-get install -y cmake ninja-build mingw-w64 extra-cmake-modules libuv1-dev",
+            "group": {
+                "kind": "build"
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Search Winpthread",
+            "command": "apt-cache search winpthread | head -20",
+            "group": {
+                "kind": "build"
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Init Submodules",
+            "command": "git submodule update --init --recursive",
+            "group": {
+                "kind": "build"
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Init Fcitx5 Submodule",
+            "command": "git submodule update --init fcitx5",
+            "group": {
+                "kind": "build"
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Check Pthread Header",
+            "command": "x86_64-w64-mingw32-gcc -print-file-name=pthread.h && echo '---' && x86_64-w64-mingw32-gcc -print-sysroot && echo '---' && x86_64-w64-mingw32-gcc -print-search-dirs",
+            "group": {
+                "kind": "build"
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Search MinGW pthread",
+            "command": "find /usr -iname 'pthread.h' | grep x86_64-w64-mingw32 | head -20",
+            "group": {
+                "kind": "build"
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Find ECM Config",
+            "command": "find /usr -path '*ECMConfig.cmake' | head -20",
             "group": {
                 "kind": "build"
             }
