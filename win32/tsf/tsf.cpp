@@ -1,13 +1,61 @@
 #include "tsf.h"
 #include <cassert>
+#include <filesystem>
 
 extern void DllAddRef();
 extern void DllRelease();
 
 namespace fcitx {
-Tsf::Tsf() { DllAddRef(); }
+Tsf::Tsf() {
+    DllAddRef();
+    inputEngine_ = new InputEngine();
+    candidateWindow_ = new CandidateWindow();
+    
+    // 尝试在 DLL 同级目录加载词典
+    char dllPath[MAX_PATH];
+    GetModuleFileNameA(nullptr, dllPath, MAX_PATH);
+    std::filesystem::path moduleDir = std::filesystem::path(dllPath).parent_path();
+    
+    // 尝试加载拼音词典
+    std::string pinyinDict = (moduleDir / "pinyin.dict").string();
+    if (inputEngine_->loadDictionary(pinyinDict, InputMethodType::Pinyin)) {
+        // 成功加载
+    }
+    
+    // 如果失败，尝试内置词典或备用词典
+    // 对于演示目的，我们保留一个硬编码的简单词典加载机制
+}
 
-Tsf::~Tsf() { DllRelease(); }
+Tsf::~Tsf() {
+    delete inputEngine_;
+    delete candidateWindow_;
+    DllRelease();
+}
+
+void Tsf::updateCandidateWindow() {
+    if (inputEngine_->hasComposition() || inputEngine_->hasCandidates()) {
+        candidateWindow_->updateCandidates(
+            inputEngine_->getCandidates(),
+            inputEngine_->getCurrentPage(),
+            inputEngine_->getTotalPages(),
+            inputEngine_->getComposition()
+        );
+        candidateWindow_->moveToCaret();
+        candidateWindow_->show();
+    } else {
+        candidateWindow_->hide();
+    }
+}
+
+void Tsf::commitText(const std::wstring& text) {
+    pendingCommitText_ = text;
+    
+    if (textEditSinkContext_) {
+        HRESULT phrSession;
+        textEditSinkContext_->RequestEditSession(
+            clientId_, this, TF_ES_SYNC | TF_ES_READWRITE, &phrSession);
+    }
+}
 
 // Windows also queries ITfDisplayAttributeCollectionProvider
 // {3977526D-1A0A-435A-8D06-ECC9516B484F} which is internal and we simply

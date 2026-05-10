@@ -13,10 +13,13 @@ add_library(${FCITX5_DLL_NAME} SHARED
     util.cpp
 )
 
-target_compile_options(${FCITX5_DLL_NAME} PRIVATE "-Wno-dll-attribute-on-redeclaration")
+# Add warning suppression for COM-related code (for GCC/clang only)
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    target_compile_options(${FCITX5_DLL_NAME} PRIVATE "-Wno-dll-attribute-on-redeclaration")
+endif()
 
 # Link with necessary Windows libraries
-target_link_libraries(${FCITX5_DLL_NAME} 
+target_link_libraries(${FCITX5_DLL_NAME}
     tsf
     ole32
     oleaut32

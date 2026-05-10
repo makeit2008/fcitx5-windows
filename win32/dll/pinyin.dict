@@ -1,0 +1,111 @@
+# 拼音词库 - 格式: 汉字 拼音编码 [词频]
+# 词频是可选的，默认为 100
+
+# 常用单字
+你 ni 1000
+我 wo 1000
+他 ta 1000
+她 ta 1000
+的 de 10000
+了 le 10000
+是 shi 10000
+在 zai 9000
+有 you 8000
+和 he 7000
+我 wo 1000
+
+# 常用词汇
+我们 women 5000
+你好 nihao 8000
+世界 shijie 6000
+中国 zhongguo 8000
+人民 renmin 7000
+工作 gongzuo 5000
+学习 xuexi 6000
+生活 shenghuo 7000
+问题 wenti 5000
+时间 shijian 6000
+自己 ziji 5000
+什么 shenme 8000
+怎么 zenme 7000
+为什么 weishenme 6000
+
+# 更多常用词
+中国 zhongguo 8000
+北京 beijing 7000
+上海 shanghai 6000
+电脑 diannao 5000
+手机 shouji 6000
+网络 wangluo 5000
+软件 ruanjian 5000
+程序 chengxu 4000
+代码 daima 4000
+项目 xiangmu 4000
+
+# 常用动词
+是 shi 10000
+有 you 9000
+做 zuo 7000
+来 lai 8000
+去 qu 7000
+看 kan 8000
+听 ting 7000
+说 shuo 8000
+读 du 6000
+写 xie 7000
+想 xiang 8000
+爱 ai 7000
+要 yao 9000
+能 neng 8000
+会 hui 7000
+
+# 常用形容词
+好 hao 8000
+大 da 7000
+小 xiao 7000
+多 duo 6000
+少 shao 5000
+新 xin 6000
+老 lao 5000
+快 kuai 6000
+慢 man 5000
+高 gao 6000
+低 di 4000
+长 chang 5000
+短 duan 4000
+热 re 5000
+冷 leng 5000
+
+# 常用副词
+很 hen 8000
+太 tai 7000
+更 geng 6000
+最 zui 7000
+还 hai 6000
+也 ye 7000
+都 dou 8000
+只 zhi 7000
+就 jiu 8000
+便 bian 5000
+
+# 时间相关
+今天 jintian 6000
+明天 mingtian 5000
+昨天 zuotian 5000
+现在 xianzai 7000
+以前 yiqian 5000
+以后 yihou 5000
+早上 zaoshang 4000
+晚上 wanshang 5000
+中午 zhongwu 4000
+
+# 日常用语
+谢谢 xiexie 8000
+对不起 duibuqi 7000
+没关系 meiguangxi 6000
+请问 qingwen 7000
+没关系 meiguangxi 6000
+好的 haode 7000
+不行 buding 5000
+可以 keyi 7000
+不可以 bukeyi 6000

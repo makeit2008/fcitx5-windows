@@ -2,6 +2,8 @@
 
 #include <atlcomcli.h>
 #include <msctf.h>
+#include "InputEngine.h"
+#include "CandidateWindow.h"
 
 namespace fcitx {
 class Tsf : public ITfTextInputProcessorEx,
@@ -80,5 +82,16 @@ class Tsf : public ITfTextInputProcessorEx,
     void uninitKeyEventSink();
     BOOL processKey(WPARAM wParam, LPARAM lParam);
     BOOL keyDownHandled_ = false;
+
+    // 输入法引擎和 UI
+    InputEngine* inputEngine_;
+    CandidateWindow* candidateWindow_;
+    
+    // 待提交的文本
+    std::wstring pendingCommitText_;
+    
+    // 辅助函数
+    void updateCandidateWindow();
+    void commitText(const std::wstring& text);
 };
 } // namespace fcitx
